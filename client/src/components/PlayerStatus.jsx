@@ -7,8 +7,8 @@ const PlayerStatus = () => {
     //which game we are in, initialgame is game1 which is in games[0] 
     const [game, setGame] = React.useState(0)
 
-    //update if game is changed
-    const [isGameChanged, setIsGameChanged] = React.useState(false)
+    //update if Player Status is changed
+    const [isPlayerStatusChanged, setIsPlayerStatusChanged] = React.useState(false)
 
     //All status to print colorful btns
     let statusOption = [
@@ -17,13 +17,13 @@ const PlayerStatus = () => {
         { status: 'Not Playing', color: 'red' }
     ]
 
-    //get players
+    //get players - it will be updated everytime a player status changed
     React.useEffect(() => {
         axios.get(`http://localhost:8000/api/players`)
             .then(res => setPlayers(res.data.players))
             .catch(err => console.log(err))
-        setIsGameChanged(false)
-    }, [isGameChanged])
+        setIsPlayerStatusChanged(false)
+    }, [isPlayerStatusChanged])
 
     //choose game 
     const handleClick = (e) => {
@@ -34,7 +34,7 @@ const PlayerStatus = () => {
     const handleAction = (e, player) => {
         player.games[game].status = e.target.value
         axios.put(`http://localhost:8000/api/players/update/${player._id}`, player)
-            .then(setIsGameChanged(true))
+            .then(setIsPlayerStatusChanged(true))
             .catch(err => console.log(err))
     }
     return (
@@ -53,14 +53,18 @@ const PlayerStatus = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {players.map((a, index) =>
-                        <tr key={a._id}>
-                            <td>{a.name}</td>
+                    {players.map(player =>
+                        <tr key={player._id}>
+                            <td>{player.name}</td>
                             <td>
+                                {/* loop throw the list we created to show all three status,
+                                 but give color to player status only */}
                                 {statusOption.map((op, ind) =>
-                                    a.games[game].status == op.status ?
-                                        <button key={ind} className="btn mx-1" style={{ backgroundColor: op.color }} onClick={(e) => handleAction(e, a)} value={op.status}>{op.status}</button> :
-                                        <button key={ind} className="btn btn-light mx-1" onClick={(e) => handleAction(e, a)} value={op.status}>{op.status}</button>
+                                    // compare here to give the player status a color
+                                    // if the status from our list == player status => give it a colored button
+                                    player.games[game].status == op.status ?
+                                        <button key={ind} className="btn mx-1" style={{ backgroundColor: op.color }} onClick={(e) => handleAction(e, player)} value={op.status}>{op.status}</button> :
+                                        <button key={ind} className="btn btn-light mx-1" onClick={(e) => handleAction(e, player)} value={op.status}>{op.status}</button>
                                 )}
                             </td>
                         </tr>)}
