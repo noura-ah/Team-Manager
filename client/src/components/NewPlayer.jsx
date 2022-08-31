@@ -7,13 +7,12 @@ const NewPlayer = () => {
     const [player, setPlayer] = React.useState({
         name: '',
         position: 'Forward',
+        games: [ {status:'Undecided'} , {status:'Undecided'}, {status:'Undecided'}]
 
-        game1: 'Undecided',
-        game2: 'Undecided',
-        game3: 'Undecided',
 
     })
-    const [isCreated, setIsCreated] = React.useState(false)
+    // const [isCreated, setIsCreated] = React.useState(false)
+
     const [errorName, setErrorName] = React.useState({
         msg: '',
         isError: true,
@@ -23,8 +22,10 @@ const NewPlayer = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setIsCreated(false)
+    
         setPlayer({ ...player, [name]: value })
+
+        //handle errors
         if (name == 'name') {
             setErrorName({ ...errorName, msg: '', isError: true })
             if (value.length < 3 && value.length != 0) {
@@ -40,14 +41,16 @@ const NewPlayer = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+
+        //create new player
         axios.post(`http://localhost:8000/api/players/new`, player)
             .then(res => {
-                setIsCreated(true)
+                // setIsCreated(true)
                 history.push('/')
             })
             .catch(err => {
                 console.log(err)
-                
+
             })
 
     }

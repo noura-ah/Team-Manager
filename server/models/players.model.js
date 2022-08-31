@@ -1,5 +1,9 @@
 const mongoose = require("mongoose")
 
+const Game = new mongoose.Schema({
+    status: String
+})
+
 const PlayerScheme = new mongoose.Schema(
     {
         name: {
@@ -9,9 +13,7 @@ const PlayerScheme = new mongoose.Schema(
         },
         position: String,
 
-        game1: String,
-        game2: String,
-        game3: String
+        games: [Game]
 
     },
 
@@ -19,6 +21,8 @@ const PlayerScheme = new mongoose.Schema(
         // this will create createAt and updateAt directly
         timestamps: true
     })
+
+
 
 const Player = mongoose.model("Player", PlayerScheme)
 

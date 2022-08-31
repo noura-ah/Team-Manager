@@ -4,10 +4,6 @@ import style from './Popup.modules.css'
 import DeleteBtn from './DeleteBtn';
 
 const Pop_up = (props) => {
-    // const handleDelete = () => {
-    //     handleDelete
-    // }
-
     return (<Popup
         trigger={<button className="btn btn-dark"> Delete </button>}
         modal
@@ -26,7 +22,6 @@ const Pop_up = (props) => {
                     <button
                         className="btn btn-dark mx-1"
                         onClick={() => {
-                            console.log('modal closed ');
                             close();
                         }}
                     >

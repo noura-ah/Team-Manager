@@ -17,7 +17,7 @@ const ListPlayers = () => {
     }, [isDeleted])
 
     const handleDelete = (id) => {
-        setPlayers(players.filter(a => a._id == id))
+        setPlayers((state) => players.filter(a => a._id != id))
         setIsDeleted(true)
     }
     return (
@@ -39,9 +39,7 @@ const ListPlayers = () => {
                             <td>{a.name}</td>
                             <td>{a.position}</td>
                             <td>
-                                {/* <Link className="btn btn-dark mx-1" to={l => `/edit/${a._id}`}>Edit</Link> */}
                                 <Pop_up name={a.name} id={a._id} handleDelete={() => handleDelete(a._id)}/>
-                                
                             </td>
                         </tr>)}
                 </tbody>
